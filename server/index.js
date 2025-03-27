@@ -10,7 +10,7 @@ const path = require('path'); // Add path module for working with file paths
 const sequelize = require('./database');
 const PapopbotDev = require('./models/PapopbotDev');
 const DevDetails = require('./models/DevDetails');
-const DevPosition = require('./models/DevPosition');
+const DevPosition = require('./models/DevPosition.js');
 const DevImage = require('./models/DevImage');
 
 // Initialize Express app

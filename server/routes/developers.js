@@ -4,7 +4,7 @@ const router = express.Router();
 const PapopbotDev = require('../models/PapopbotDev');
 const DevDetails = require('../models/DevDetails');
 const DevImage = require('../models/DevImage');
-const DevPosition = require('../models/DevPosition');
+const DevPosition = require('../models/DevPosition.js');
 
 // GET all developers
 router.get('/', (req, res) => {
