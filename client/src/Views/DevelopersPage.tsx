@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import Background from './Background';
 import Footer from '../Components/Footer';
 
@@ -7,65 +7,54 @@ interface Developer {
     name: string;
     images: {
         image: string;
+        profile: string;
+        profileWafer: string;
     };
 }
 
 const DevelopersPage = () => {
     const [developers, setDevelopers] = useState<Developer[]>([]);
-    const scrollContainerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        let isMounted = true;
         fetch('https://api.papopbot.com/api/developers')
             .then(response => response.json())
-            .then(data => setDevelopers(data))
-            .catch(error => console.error('Error fetching developers:', error));
-    }, []);
-
-    const SCROLL_SPEED_DOWN = 3; 
-    const SCROLL_SPEED_UP = 3; 
-
-    useEffect(() => {
-        const handleWheel = (e: WheelEvent) => {
-            if (scrollContainerRef.current) {
-                e.preventDefault();
-
-                if (e.deltaY > 0) {
-                    scrollContainerRef.current.scrollLeft += e.deltaY * SCROLL_SPEED_DOWN;
-                } else {
-                    scrollContainerRef.current.scrollLeft += e.deltaY * SCROLL_SPEED_UP;
+            .then(data => {
+                if (isMounted) {
+                    setDevelopers(data);
                 }
-            }
-        };
-
-        document.body.addEventListener('wheel', handleWheel, { passive: false });
-
+            })
+            .catch(error => console.error('Error fetching developers:', error));
         return () => {
-            document.body.removeEventListener('wheel', handleWheel);
+            isMounted = false;
         };
     }, []);
 
     return (
-        <div className="w-full h-screen overflow-hidden">
+        <div className="flex flex-col">
             <Background>
-                <div className='flex flex-col'>
-                    <div className='text-4xl font-bold text-white p-5'>
+                <div className="flex-1 flex flex-col">
+                    <div className='text-4xl lg:text-[4rem] font-bold text-white p-5 text-center drop-shadow-lg'>
                         Papop-bot Developers
                     </div>
-                    <div
-                        ref={scrollContainerRef}
-                        className="flex flex-row items-center overflow-x-auto overflow-y-hidden scroll-smooth"
-                        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-                    >
+                    <div className="flex-1 flex flex-wrap justify-center content-start pb-8 mx-[20%] my-[6.8%]">
                         {developers.slice(0, 8).map((developer) => (
                             <div
                                 key={developer.id}
-                                className="flex-shrink-0 p-4 h-[100%/3] flex items-center justify-center cursor-pointer"
+                                className="bg-white rounded-2xl shadow-lg m-4 overflow-hidden cursor-pointer hover:scale-110 transform transition-transform duration-300 "
+                                onClick={() => window.location.href = `/developers/${developer.id}`}
                             >
-                                <img onClick={() => window.location.href = `/developers/${developer.id}`}
-                                    src={developer.images.image}
+                                <img 
+                                    src={developer.images.profile}
                                     alt={developer.name}
-                                    className="hover:scale-110 transform transition-transform duration-300"
+                                    className="rounded-t-2xl h-48 w-48 object-cover transition-opacity duration-150 hover:opacity-0"
                                 />
+                                <img 
+                                    src={developer.images.profileWafer}
+                                    alt={developer.name}
+                                    className="rounded-t-2xl h-48 w-48 object-cover absolute top-0 left-0 transition-opacity duration-150 opacity-0 hover:opacity-100"
+                                />
+                                <div className="p-2 text-center font-semibold">{developer.name}</div>
                             </div>
                         ))}
                     </div>

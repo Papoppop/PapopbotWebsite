@@ -4,8 +4,8 @@ const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   return (
-    <div className="flex flex-row justify-between py-2 px-4 w-full text-center bg-gradient-to-b from-[#3B476F] to-[#2D3655] text-white sticky top-0">
-      <a href='/'><img className="h-12" src="https://i.postimg.cc/pLSV7v72/School-emblem.png" /></a>
+    <div className="flex flex-row justify-between py-2 px-4 w-full text-center bg-gradient-to-b from-[#3B476F] to-[#2D3655] text-white sticky z-[100] top-0">
+      <a href='/'><img className="h-12" src="/images/webcomponent/webicon.png" /></a>
       <div className='flex flex-row space-x-10'>
         <a href='/developers' className='hidden lg:block self-center hover:bg-[#2d365] hover:cursor-pointer hover:underline'>Developers</a>
         <a href='/aboutus' className='hidden lg:block self-center hover:bg-[#2d365] hover:cursor-pointer hover:underline'>About Us</a>

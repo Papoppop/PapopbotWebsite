@@ -179,15 +179,15 @@ const ShowDevelopers = () => {
 
   return (
     <Background>
-      <div className="w-full min-h-screen flex flex-col">
-        <div className="flex-grow">
-          <div className="flex flex-col md:flex-row justify-center items-center py-8">
+      <div className="w-full flex flex-col">
+        <div className="max-h-screen">
+          <div className="flex flex-col md:flex-row justify-center items-center ">
             <div className="flex flex-col items-center p-5">
               <img src={developer.images.profile} alt={developer.name} className="w-60 md:hidden rounded-full" />
-              <img src={developer.images.image} alt={developer.name} className="hidden md:block" />
+              <img src={developer.images.image} alt={developer.name} className="hidden md:block md:max-h-200" />
             </div>
 
-            <div className="pl-4 justify-center items-center lg:items-start flex flex-col max-w-3xl">
+            <div className="justify-center items-center lg:items-start flex flex-col max-w-3xl">
               <div className="font-bold text-white drop-shadow-md text-center text-4xl p-5 md:text-[3rem] lg:text-[5rem] md:text-left">
                 <div>{developer.name.toUpperCase()}</div>
 
