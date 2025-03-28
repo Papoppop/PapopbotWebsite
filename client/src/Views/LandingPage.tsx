@@ -5,7 +5,7 @@ const LandingPage = () => {
   return (
     <>
       <Background>
-        <div className="bg-[url(https://i.postimg.cc/fTYWhJWq/Last-Goodbye-bgblur.png)] bg-cover bg-size-[100%]">
+        <div className="bg-[url('/images/webcomponent/webbgblur.png')] bg-cover bg-size-[100%]">
         <div className="flex flex-col items-center justify-center space-y-20">
           <div className="flex flex-col lg:flex-row items-center lg:justify-evenly lg:space-x-40 my-20">
             <div className="flex flex-col items-center">
