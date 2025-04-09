@@ -24,3 +24,7 @@ config.json
 *.sln
 *.sw?
 .env
+
+#Chatbot File
+small-talk-d033a-8b16ec464c06.json
+package-lock.json

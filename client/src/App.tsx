@@ -4,6 +4,7 @@ import DevelopersPage from './Views/DevelopersPage';
 import ShowDevelopers from './Views/ShowDevelopers';
 import Navbar from './Components/Navbar';
 import AboutUs from './Views/AboutUs';
+import ChatPage from './Views/ChatPage';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/developers" element={<DevelopersPage />} />
         <Route path="/developers/:id" element={<ShowDevelopers />} />
         <Route path="/aboutus" element={<AboutUs />} />
+        <Route path="/chat" element={<ChatPage />} />
       </Routes>
     </BrowserRouter>
     </>
