@@ -40,23 +40,28 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false // Disable embedder policy which can block resources
 }));
 
-// Define allowed origins
-const allowedOrigins = (process.env.CORS_ORIGIN || '').split(',').map(origin => origin.trim());
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, origin);
-    } else {
-      callback(new Error('CORS policy does not allow access from this origin - Papop'), false);
-    }
-  },
+  origin: process.env.CORS_ORIGIN.split(','), // Use origins from .env file
   credentials: true,
-  methods: ['GET', 'POST', 'OPTIONS'], // Added POST for chatbot
-  allowedHeaders: ['Content-Type', 'Authorization']
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 200 // Some legacy browsers choke on 204
 };
 
 // Apply CORS middleware
 app.use(cors(corsOptions));
+
+// Additional CORS headers for specific situations
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+  next();
+});
 
 // Add cache headers for images
 app.use('/images', (req, res, next) => {
@@ -102,7 +107,7 @@ app.post('/chat', async (req, res) => {
       queryInput: {
         text: {
           text: message,
-          languageCode: 'en-US',
+          languageCode: 'th-TH',
         },
       },
     };
@@ -187,7 +192,7 @@ async function startServer() {
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
       console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
-      console.log(`CORS configured for: ${allowedOrigins.join(', ') || 'ALL ORIGINS'}`);
+      console.log(`CORS configured for: ALL ORIGINS (development mode)`);
       console.log(`Chatbot integrated on the same server (endpoint: /chat)`);
       console.log(`Dialogflow project ID: ${projectId}`);
     });
