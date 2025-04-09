@@ -7,6 +7,7 @@ const Navbar = () => {
     <div className="flex flex-row justify-between py-2 px-4 w-full text-center bg-gradient-to-b from-[#3B476F] to-[#2D3655] text-white sticky z-[100] top-0">
       <a href='/'><img className="h-12" src="/images/webcomponent/webicon.png" /></a>
       <div className='flex flex-row space-x-10'>
+        <a href='/chat' className='hidden lg:block self-center hover:bg-[#2d365] hover:cursor-pointer hover:underline'>Chat</a>
         <a href='/developers' className='hidden lg:block self-center hover:bg-[#2d365] hover:cursor-pointer hover:underline'>Developers</a>
         <a href='/aboutus' className='hidden lg:block self-center hover:bg-[#2d365] hover:cursor-pointer hover:underline'>About Us</a>
       </div>
@@ -41,6 +42,12 @@ const Navbar = () => {
               className="block px-4 py-2 text-sm text-white hover:bg-[#1a1b24]"
             >
               About Us
+            </a>
+            <a
+              href="/chat"
+              className="block px-4 py-2 text-sm text-white hover:bg-[#1a1b24]"
+            >
+            Chat
             </a>
           </div>
         )}

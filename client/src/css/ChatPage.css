@@ -1,0 +1,137 @@
+/* Basic resets */
+html, body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* No scroll class applied to body - only on desktop */
+  body.no-scroll {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Mobile specific styles */
+  @media only screen and (max-width: 767px) {
+    body {
+      overflow-y: auto; /* Allow scrolling on mobile */
+    }
+    
+    #chatbox {
+      height: auto;
+      min-height: 70vh;
+    }
+  }
+  
+  /* Desktop styles */
+  @media only screen and (min-width: 992px) {
+      #largescreen {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          overflow: hidden;
+      }
+      
+      /* Bot image container - completely isolated with its own z-index */
+      .papopbotimage {
+          position: absolute;
+          left: 5rem;
+          animation: floatAnimation 3s ease-in-out infinite;
+          z-index: 20;
+          pointer-events: none; /* Prevent interaction with the image */
+      }
+      
+      @keyframes floatAnimation {
+          0% {
+              top: 5rem;
+          }
+          50% {
+              top: 4rem;
+          }
+          100% {
+              top: 5rem;
+          }
+      }
+      
+      /* Input form - highest z-index to always be on top */
+      .input {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          z-index: 100;
+          position: absolute;
+          bottom: 10%;
+          left: 50%;
+          transform: translateX(-50%);
+          max-width: 400px;
+          width: 100%;
+      }
+      
+      /* Instruction message */
+      #instruction {
+          position: absolute;
+          top: 10%;
+          left: 50%;
+          transform: translateX(-50%);
+          color: white;
+          background-color: rgba(35, 113, 215, 0.5);
+          padding: 1rem 2rem;
+          border-radius: 1rem;
+          text-align: center;
+          z-index: 99;
+      }
+     
+      /* Chat bubble - completely isolated with its own z-index and animation */
+      .chat-bubble-container {
+          position: fixed; /* Use fixed instead of absolute for even more isolation */
+          z-index: 30;
+          pointer-events: none; /* Prevent any interactions */
+          animation: none; /* Remove animation from container */
+          left: 68rem; /* Position independently */
+          top: 15rem;  /* Position independently */
+      }
+     
+      /* Speech bubble element with its own animation */
+      .speech-bubble {
+          position: relative;
+          background-color: rgba(75, 157, 233, 0.9) !important;
+          max-width: 20rem;
+          font-size: 2rem;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          animation: speechBubbleFloat 3s ease-in-out infinite;
+      }
+     
+      @keyframes speechBubbleFloat {
+          0% {
+              transform: translateY(0);
+          }
+          50% {
+              transform: translateY(-1rem);
+          }
+          100% {
+              transform: translateY(0);
+          }
+      }
+     
+      .speech-bubble:before {
+          content: '';
+          position: absolute;
+          left: -10px;
+          top: 15px;
+          border-top: 10px solid transparent;
+          border-right: 10px solid rgba(75, 157, 233, 0.9);
+          border-bottom: 10px solid transparent;
+      }
+     
+      /* Loading indicator with its own independent position */
+      .loading-indicator {
+          position: fixed;
+          left: 55rem;
+          top: 10rem;
+          z-index: 50;
+      }
+  }

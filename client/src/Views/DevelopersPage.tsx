@@ -31,12 +31,13 @@ const DevelopersPage = () => {
     }, []);
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col h-screen ">
             <Background>
-                <div className="flex-1 flex flex-col">
+                <div className="flex flex-col">
                     <div className='text-4xl lg:text-[4rem] font-bold text-white p-5 text-center drop-shadow-lg'>
                         Papop-bot Developers
                     </div>
+
                     <div className="flex-1 flex flex-wrap justify-center content-start pb-8 mx-[20%] my-[6.8%]">
                         {developers.slice(0, 8).map((developer) => (
                             <div

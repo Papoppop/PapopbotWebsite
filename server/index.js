@@ -41,7 +41,7 @@ app.use(helmet({
 }));
 
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN.split(','), // Use origins from .env file
+  origin: process.env.CORS_ORIGIN.split(','), 
   credentials: true,
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -84,7 +84,7 @@ app.use(express.json());
 app.get('/chat', (req, res) => {
   res.json({
     status: 'Chatbot is running',
-    projectId: projectId,
+    projectId: "small-talk-d033a",
     instructions: 'Send POST requests to this endpoint with message and sessionId'
   });
 });

@@ -1,7 +1,7 @@
 {
   "development": {
-    "username": "papopbot_dev",
-    "password": "P@p0pd4b3$t47813",
+    "username": "root",
+    "password": "password",
     "database": "papopbot",
     "host": "127.0.0.1",
     "dialect": "mysql"
