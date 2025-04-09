@@ -37,7 +37,7 @@ const Chat: React.FC = () => {
     
     try {
       // Send request to your Dialogflow API
-      const response = await fetch('http://localhost:7777/chat', {
+      const response = await fetch('http://localhost:3001/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ const Chat: React.FC = () => {
               className={`max-w-[70%] p-3 rounded-xl break-words leading-relaxed
                 ${message.sender === 'user' 
                   ? 'ml-auto bg-blue-950 text-white rounded-br-sm' 
-                  : 'mr-auto bg-[#a1c6e1] text-white rounded-bl-sm shadow-sm'}`}
+                  : 'mr-auto bg-[#b4dffe] text-white rounded-bl-sm shadow-sm'}`}
             >
               {message.text}
             </div>

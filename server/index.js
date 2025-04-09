@@ -5,6 +5,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const path = require('path'); // Add path module for working with file paths
+const dialogflow = require('@google-cloud/dialogflow');
 
 // Database and models
 const sequelize = require('./database');
@@ -16,6 +17,12 @@ const DevImage = require('./models/DevImage');
 // Initialize Express app
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// Dialogflow configuration
+const projectId = process.env.GOOGLE_PROJECT_ID;
+const sessionClient = new dialogflow.SessionsClient({
+  keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS
+});
 
 // Serve static files from public directory - this must come BEFORE helmet
 app.use(express.static(path.join(__dirname, 'public')));
@@ -33,13 +40,6 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false // Disable embedder policy which can block resources
 }));
 
-// Remove this section since we're handling it in helmet config
-// Set Cross-Origin-Resource-Policy header
-// app.use((req, res, next) => {
-//   res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
-//   next();
-// });
-
 // Define allowed origins
 const allowedOrigins = (process.env.CORS_ORIGIN || '').split(',').map(origin => origin.trim());
 const corsOptions = {
@@ -51,7 +51,7 @@ const corsOptions = {
     }
   },
   credentials: true,
-  methods: ['GET', 'OPTIONS'], // Add OPTIONS for preflight requests
+  methods: ['GET', 'POST', 'OPTIONS'], // Added POST for chatbot
   allowedHeaders: ['Content-Type', 'Authorization']
 };
 
@@ -73,6 +73,59 @@ app.use('/api', limiter);
 
 // Parse JSON requests
 app.use(express.json());
+
+// Chatbot endpoints
+// Test route to verify the chatbot is running
+app.get('/chat', (req, res) => {
+  res.json({
+    status: 'Chatbot is running',
+    projectId: projectId,
+    instructions: 'Send POST requests to this endpoint with message and sessionId'
+  });
+});
+
+// Main chatbot endpoint
+app.post('/chat', async (req, res) => {
+  try {
+    const { message, sessionId } = req.body;
+    
+    if (!message || !sessionId) {
+      return res.status(400).json({ error: 'Message and sessionId are required' });
+    }
+
+    console.log(`Processing chat request - SessionID: ${sessionId}, Message: ${message}`);
+    
+    const sessionPath = sessionClient.projectAgentSessionPath(projectId, sessionId);
+    
+    const request = {
+      session: sessionPath,
+      queryInput: {
+        text: {
+          text: message,
+          languageCode: 'en-US',
+        },
+      },
+    };
+
+    const responses = await sessionClient.detectIntent(request);
+    const result = responses[0].queryResult;
+    
+    console.log(`Intent: ${result.intent ? result.intent.displayName : 'No intent matched'}`);
+    console.log(`Response: ${result.fulfillmentText}`);
+    
+    return res.json({
+      fulfillmentText: result.fulfillmentText,
+      intent: result.intent ? result.intent.displayName : null,
+      confidence: result.intentDetectionConfidence
+    });
+  } catch (error) {
+    console.error('Dialogflow Error:', error);
+    return res.status(500).json({ 
+      error: 'Failed to process message',
+      details: error.message 
+    });
+  }
+});
 
 // Routes
 app.use('/api', require('./routes'));
@@ -135,6 +188,8 @@ async function startServer() {
       console.log(`Server is running on port ${PORT}`);
       console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
       console.log(`CORS configured for: ${allowedOrigins.join(', ') || 'ALL ORIGINS'}`);
+      console.log(`Chatbot integrated on the same server (endpoint: /chat)`);
+      console.log(`Dialogflow project ID: ${projectId}`);
     });
   } catch (error) {
     console.error('Failed to start server:', error);
